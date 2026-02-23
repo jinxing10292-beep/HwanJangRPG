@@ -16,16 +16,34 @@
             <div class="status-item">MP: <span id="mp">50</span>/<span id="max-mp">50</span></div>
             <div class="status-item">경험치: <span id="exp">0</span>/<span id="max-exp">100</span></div>
             <div class="status-item">골드: <span id="gold">0</span></div>
+            <div class="status-item">위치: <span id="current-map">시작의 마을</span></div>
         </div>
 
-        <!-- 메인 게임 화면 -->
-        <div id="main-screen">
-            <div id="character-area">
-                <div id="player-sprite" class="sprite">🧑</div>
-                <div id="player-name" class="name-tag">솧툌춋</div>
+        <!-- 맵 이동 버튼들 -->
+        <div id="map-nav">
+            <button class="map-btn" data-map="시작의 마을">시작의 마을</button>
+            <button class="map-btn" data-map="개미밭">개미밭 (1레벨)</button>
+            <button class="map-btn" data-map="토끼밭">토끼밭 (3레벨)</button>
+            <button class="map-btn" data-map="사슴고원">사슴고원 (7레벨)</button>
+            <button class="map-btn" data-map="뱀 사냥터">뱀 사냥터 (15레벨)</button>
+            <button class="map-btn" data-map="사자 사냥터">사자 사냥터 (25레벨)</button>
+            <button class="map-btn" data-map="동굴">동굴 (30레벨)</button>
+            <button class="map-btn" data-map="웅장한 용궁">웅장한 용궁 (100레벨)</button>
+        </div>
+
+        <!-- 메인 게임 화면 (맵) -->
+        <div id="game-screen">
+            <div id="map-area">
+                <!-- 플레이어 -->
+                <div id="player" class="entity player">
+                    <div class="entity-sprite">🧑</div>
+                    <div class="entity-name">솧툌춋</div>
+                </div>
+                <!-- NPC들 -->
+                <div id="npcs-container"></div>
+                <!-- 몬스터들 -->
+                <div id="monsters-container"></div>
             </div>
-            <div id="npc-area"></div>
-            <div id="monster-area"></div>
         </div>
 
         <!-- 시스템 메시지 -->
@@ -43,6 +61,11 @@
             <button id="btn-inventory" class="control-btn">인벤토리</button>
             <button id="btn-quest" class="control-btn">퀘스트</button>
             <button id="btn-save" class="control-btn">저장</button>
+        </div>
+
+        <!-- 이동 안내 -->
+        <div id="movement-guide">
+            이동: 방향키 또는 WASD | 공격: 스페이스 | 대화: E
         </div>
 
         <!-- 모달 창들 -->
@@ -74,13 +97,17 @@
         <div id="nickname-modal" class="modal">
             <div class="modal-content">
                 <h2>닉네임 설정</h2>
-                <input type="text" id="nickname-input" placeholder="두 글자 닉네임" maxlength="2">
+                <input type="text" id="nickname-input" placeholder="닉네임을 입력하세요" maxlength="10">
                 <div id="nickname-result"></div>
+                <p style="font-size: 12px; color: #888; margin: 10px 0;">
+                    💡 팁: "솧툌춋"만 사용 가능합니다!
+                </p>
                 <button id="btn-set-nickname">설정</button>
             </div>
         </div>
     </div>
 
+    <script src="game-data.js"></script>
     <script src="game.js"></script>
 </body>
 </html>

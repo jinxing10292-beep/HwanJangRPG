@@ -39,7 +39,7 @@ body {
 }
 
 /* 메인 게임 화면 */
-#main-screen {
+#game-screen {
     background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
     border-radius: 15px;
     min-height: 400px;
@@ -48,29 +48,118 @@ body {
     margin-bottom: 20px;
 }
 
-#character-area, #npc-area, #monster-area {
+#map-area {
+    width: 800px;
+    height: 600px;
+    position: relative;
+    margin: 0 auto;
+    background: #4a7c59;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* 엔티티 (플레이어, NPC, 몬스터) */
+.entity {
     position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
+    transition: transform 0.1s;
 }
 
-.sprite {
-    font-size: 64px;
+.entity:hover {
+    transform: scale(1.1);
+}
+
+.entity-sprite {
+    font-size: 48px;
+    transition: transform 0.1s;
+}
+
+.entity-name {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.entity.player .entity-sprite {
     animation: bounce 1s ease-in-out infinite;
 }
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-5px); }
 }
 
-.name-tag {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 5px 10px;
-    border-radius: 5px;
+/* NPC 스타일 */
+.entity.npc .entity-name {
+    background: rgba(0, 100, 255, 0.7);
+}
+
+/* 몬스터 스타일 */
+.entity.monster .entity-sprite {
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+.entity.monster .entity-name {
+    background: rgba(255, 0, 0, 0.7);
+}
+
+/* 맵 네비게이션 */
+#map-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.map-btn {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
     font-size: 12px;
-    margin-top: 5px;
+    transition: all 0.2s;
+}
+
+.map-btn:hover {
+    background: #4b5563;
+    transform: translateY(-2px);
+}
+
+.map-btn.active {
+    background: #3b82f6;
+    border-color: #2563eb;
+}
+
+.map-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 이동 안내 */
+#movement-guide {
+    text-align: center;
+    color: #888;
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 }
 
 /* 시스템 메시지 */

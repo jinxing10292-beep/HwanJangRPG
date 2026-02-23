@@ -1,144 +1,5 @@
-// 환장 RPG - 솧툌춋의 모험
-// Game State
-const gameState = {
-    player: {
-        name: '솧툌춋',
-        level: 1,
-        job: '초보자',
-        hiddenJob: null,
-        hp: 100,
-        maxHp: 100,
-        mp: 50,
-        maxMp: 50,
-        exp: 0,
-        maxExp: 100,
-        gold: 0,
-        skills: [],
-        inventory: [],
-        completedQuests: [],
-        currentQuest: null,
-        pkCount: 0,
-        nicknameBug: true
-    },
-    npcs: {},
-    monsters: [],
-    currentScene: 'village',
-    flags: {}
-};
-
-// NPC Data
-const npcData = {
-    '마을이장': {
-        name: '마을이장',
-        sprite: '👴',
-        dialog: [
-            "반갑네 낮선 이여..",
-            "이 강력한 무기를 장착해보게나...",
-            "장착했으면 휘둘러서 공격 해보게!",
-            "5레벨이 됐으니 이제 슬슬 직업을 정할 때가 됐군...",
-            "히든직업을 얻을려 하다 전직하지 않은 사람이 수두룩 하네",
-            "직업 추천이 뜰 때까지 사냥을 하기 위해 토끼 사냥터로 가게"
-        ],
-        quests: [
-            { id: 'rabbit_liver', title: '토끼 간 10개', description: '마을 밖의 토끼를 잡아 간을 가져다주세요', reward: { exp: 50, gold: 10 } },
-            { id: 'deer_meat', title: '사슴 고기 10개', description: '사슴고원에서 사슴을 잡아 고기를 가져다주세요', reward: { exp: 100, gold: 20 } },
-            { id: 'deer_antler', title: '사슴 녹용 20개', description: '사슴 녹용을 더 가져다주세요', reward: { exp: 200, gold: 30 } }
-        ]
-    },
-    '토끼공듀': {
-        name: '토끼공듀',
-        sprite: '🐰',
-        level: 38,
-        dialog: [
-            "질러볼까?",
-            "파티에 초대할게!",
-            "발음 연습 좀 해야겠어",
-            "내가 도와줄게!"
-        ]
-    },
-    '하겐다즈': {
-        name: '하겐다즈',
-        sprite: '🧙',
-        job: '마법사',
-        dialog: [
-            "마법사의 스킬을 알려주지",
-            "마법을 쓰려면 마법연산이 필요해",
-            "가장 기초 마법인 파이어볼을 알려주겠네"
-        ],
-        skills: ['파이어볼']
-    },
-    '오타크로드': {
-        name: '오타크로드',
-        sprite: '🥷',
-        job: '도적',
-        dialog: [
-            "도적의 스킬을 알려주지",
-            "소매치기 대결을 해볼까?",
-            "이쪽 세계에선 정보가 생명이라"
-        ],
-        skills: ['소매치기']
-    },
-    '돼지바한입추릅': {
-        name: '돼지바 한입 추릅',
-        sprite: '🐷',
-        job: '전사',
-        dialog: [
-            "자! 싸워라! 이기면 전사다!",
-            "전사의 스킬을 알려주지"
-        ],
-        skills: ['강타', '실드']
-    }
-};
-
-// Skills Data
-const skillData = {
-    '연속베기': { mp: 20, damage: 150, description: '마나를 소모하여 연속으로 베기' },
-    '파이어볼': { mp: 30, damage: 100, description: '마법 연산을 통해 화염구 발사' },
-    '더블샷에로우': { mp: 25, damage: 120, description: '화살을 연달아 두 번 발사' },
-    '강타': { mp: 15, damage: 80, description: '강력한 일격' },
-    '실드': { mp: 10, description: '방어력 증가' },
-    '소매치기': { mp: 0, description: '상대의 아이템을 훔침' },
-    '분노': { mp: 30, description: '공격력 10% 증가' },
-    '연기하기': { mp: 20, description: '속이는 기술 (성공률 2%)' },
-    '심연참': { mp: 50, damage: 300, description: '강력한 일격' }
-};
-
-// Monster Data
-const monsterData = {
-    '토끼': { level: 2, hp: 30, damage: 5, exp: 10, drops: ['토끼의 간'] },
-    '사슴': { level: 4, hp: 50, damage: 10, exp: 20, drops: ['사슴고기', '녹용', '사냥꾼의 활'] },
-    '불곰': { level: 17, hp: 200, damage: 25, exp: 100, drops: ['웅담'] },
-    '산적': { level: 7, hp: 60, damage: 15, exp: 30, drops: [] },
-    '끼리코': { level: 30, hp: 300, damage: 40, exp: 200, drops: [] }
-};
-
-// Quest Data
-const questData = {
-    'rabbit_liver': {
-        title: '토끼 사냥',
-        description: '토끼 간 10개 구해오기',
-        target: '토끼',
-        targetCount: 10,
-        currentCount: 0,
-        rewards: { exp: 50, gold: 10 }
-    },
-    'deer_meat': {
-        title: '사슴 사냥',
-        description: '사슴 고기 10개 구해오기',
-        target: '사슴',
-        targetCount: 10,
-        currentCount: 0,
-        rewards: { exp: 100, gold: 20 }
-    },
-    'deer_antler': {
-        title: '녹용 수집',
-        description: '사슴 녹용 20개 구해오기',
-        target: '녹용',
-        targetCount: 20,
-        currentCount: 0,
-        rewards: { exp: 200, gold: 30 }
-    }
-};
+// 환장 RPG - 솧툌춋의 모험 (전체 스토리 적용)
+// 데이터는 game-data.js에서 로드됨
 
 // Initialize Game
 function initGame() {
@@ -163,28 +24,21 @@ function showNicknameModal() {
 // Test Nickname (Nickname Bug System)
 function testNickname(nickname) {
     const resultDiv = document.getElementById('nickname-result');
-    const bugNames = ['마왕', '천사', '엘프', '라라', '크웩', '탕후루', '명란젓코난', '아안해', '아니이것도있다고'];
     
-    if (nickname.length === 2) {
-        resultDiv.innerHTML = '❌ 닉네임 설정 실패!<br>두 글자는 안 됩니다!';
-        resultDiv.classList.add('nickname-bug');
+    // 최종 허용되는 닉네임
+    const allowedName = '솧툌춋';
+    
+    if (nickname === allowedName) {
+        resultDiv.innerHTML = '✅ 닉네임 설정 성공!<br>이게 네 이름이구나!';
         setTimeout(() => {
-            resultDiv.classList.remove('nickname-bug');
-        }, 300);
-    } else if (bugNames.includes(nickname)) {
-        resultDiv.innerHTML = '❌ 이미 사용 중인 닉네임입니다!';
-    } else {
-        resultDiv.innerHTML = '✅ 닉네임 설정 성공!<br>하지만...';
-        setTimeout(() => {
-            resultDiv.innerHTML += '<br>⚠️ 닉네임 버그 발생!<br>NPC들이 이름을 부를 수 없습니다!';
-            gameState.player.nicknameBug = true;
-            setTimeout(() => {
-                document.getElementById('nickname-modal').classList.add('hidden');
-                showSystemMessage('솧툌춋으로 게임에 접속합니다...', 'success');
-                startGame();
-            }, 2000);
-        }, 1000);
+            document.getElementById('nickname-modal').classList.add('hidden');
+            showSystemMessage(`${nickname}으로 게임에 접속합니다...`, 'success');
+            gameState.player.name = nickname;
+            startGame();
+        }, 1500);
         return;
+    } else {
+        resultDiv.innerHTML = '❌ 이미 사용 중인 닉네임입니다!';
     }
     
     setTimeout(() => {
@@ -194,30 +48,213 @@ function testNickname(nickname) {
 
 // Start Game
 function startGame() {
-    gameState.player.name = '솧툌춋';
-    gameState.currentScene = 'village';
-    showNPC('마을이장');
+    gameState.player.x = 400;
+    gameState.player.y = 300;
+    gameState.currentScene = '시작의 마을';
+    loadMap('시작의 마을');
     updateUI();
+    setupMovement();
+    
+    // 업적 체크
+    checkAchievement('first_step');
 }
 
-// Show NPC
-function showNPC(npcId) {
+// Load Map
+function loadMap(mapName) {
+    const map = mapData[mapName];
+    if (!map) return;
+    
+    gameState.currentScene = mapName;
+    
+    // 맵 방문 기록
+    gameState.flags.visitedMaps[mapName] = true;
+    
+    // 맵 배경색 설정
+    const mapArea = document.getElementById('map-area');
+    mapArea.style.background = map.bgColor;
+    
+    // 현재 맵 표시
+    document.getElementById('current-map').textContent = mapName;
+    
+    // 맵 버튼 상태 업데이트
+    document.querySelectorAll('.map-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.map === mapName) {
+            btn.classList.add('active');
+        }
+        const btnMap = mapData[btn.dataset.map];
+        if (btnMap && gameState.player.level < btnMap.minLevel) {
+            btn.disabled = true;
+        } else {
+            btn.disabled = false;
+        }
+    });
+    
+    // NPC 렌더링
+    renderNPCs(map.npcs);
+    
+    // 몬스터 렌더링
+    renderMonsters(map.monsters);
+    
+    // 플레이어 위치 초기화
+    gameState.player.x = 400;
+    gameState.player.y = 300;
+    updatePlayerPosition();
+    
+    showSystemMessage(`${mapName} 입장! (${map.description})`, 'success');
+    
+    // 탐험가 업적 체크
+    if (Object.keys(gameState.flags.visitedMaps).length >= 3) {
+        checkAchievement('explorer');
+    }
+}
+
+// Render NPCs
+function renderNPCs(npcIds) {
+    const container = document.getElementById('npcs-container');
+    container.innerHTML = '';
+    
+    npcIds.forEach((npcId, index) => {
+        const npc = npcData[npcId];
+        if (!npc) return;
+        
+        const npcEl = document.createElement('div');
+        npcEl.className = 'entity npc';
+        npcEl.dataset.npc = npcId;
+        npcEl.innerHTML = `
+            <div class="entity-sprite">${npc.sprite}</div>
+            <div class="entity-name">${npc.name}</div>
+        `;
+        
+        // NPC 위치 (고정)
+        npcEl.style.left = `${100 + (index * 120)}px`;
+        npcEl.style.top = '200px';
+        
+        npcEl.addEventListener('click', () => {
+            showNPCDialog(npcId);
+        });
+        
+        container.appendChild(npcEl);
+    });
+}
+
+// Render Monsters
+function renderMonsters(monsterIds) {
+    const container = document.getElementById('monsters-container');
+    container.innerHTML = '';
+    
+    if (!monsterIds || monsterIds.length === 0) return;
+    
+    monsterIds.forEach((monsterId, index) => {
+        const monster = monsterData[monsterId];
+        if (!monster) return;
+        
+        const monsterEl = document.createElement('div');
+        monsterEl.className = 'entity monster';
+        monsterEl.dataset.monster = monsterId;
+        monsterEl.dataset.hp = monster.hp;
+        monsterEl.innerHTML = `
+            <div class="entity-sprite">👹</div>
+            <div class="entity-name">Lv.${monster.level} ${monsterId}</div>
+        `;
+        
+        const x = 100 + Math.random() * 600;
+        const y = 100 + Math.random() * 400;
+        monsterEl.style.left = `${x}px`;
+        monsterEl.style.top = `${y}px`;
+        
+        monsterEl.addEventListener('click', () => {
+            attackMonster(monsterId, monsterEl);
+        });
+        
+        container.appendChild(monsterEl);
+    });
+}
+
+// Update Player Position
+function updatePlayerPosition() {
+    const playerEl = document.getElementById('player');
+    playerEl.style.left = `${gameState.player.x}px`;
+    playerEl.style.top = `${gameState.player.y}px`;
+}
+
+// Setup Movement
+function setupMovement() {
+    document.addEventListener('keydown', (e) => {
+        const speed = 10;
+        const map = mapData[gameState.currentScene];
+        if (!map) return;
+        
+        switch(e.key) {
+            case 'ArrowUp': case 'w': case 'W':
+                gameState.player.y = Math.max(50, gameState.player.y - speed);
+                break;
+            case 'ArrowDown': case 's': case 'S':
+                gameState.player.y = Math.min(550, gameState.player.y + speed);
+                break;
+            case 'ArrowLeft': case 'a': case 'A':
+                gameState.player.x = Math.max(50, gameState.player.x - speed);
+                break;
+            case 'ArrowRight': case 'd': case 'D':
+                gameState.player.x = Math.min(750, gameState.player.x + speed);
+                break;
+        }
+        
+        updatePlayerPosition();
+    });
+}
+
+// Show NPC Dialog
+function showNPCDialog(npcId) {
     const npc = npcData[npcId];
     if (!npc) return;
     
-    const npcArea = document.getElementById('npc-area');
-    npcArea.innerHTML = `
-        <div class="sprite">${npc.sprite}</div>
-        <div class="name-tag">${npc.name}</div>
-    `;
+    // NPC별 특수 대사
+    if (npcId === '마을이장') {
+        if (!gameState.flags.gotWoodenClub) {
+            showDialog(npc.name, "이 강력한 무기를 장착해보게나... 나무몽둥이다!");
+            gameState.flags.gotWoodenClub = true;
+            gameState.player.weapon = '나무몽둥이';
+            addItem('나무몽둥이');
+            checkAchievement('get_weapon');
+            return;
+        }
+    }
     
-    // Position NPC
-    npcArea.style.right = '20%';
-    npcArea.style.top = '30%';
-    
-    // Show dialog
     if (npc.dialog && npc.dialog.length > 0) {
-        showDialog(npc.name, npc.dialog[0]);
+        const randomDialog = npc.dialog[Math.floor(Math.random() * npc.dialog.length)];
+        showDialog(npc.name, randomDialog);
+    }
+}
+
+// Attack Monster
+function attackMonster(monsterId, monsterEl) {
+    const monster = monsterData[monsterId];
+    if (!monster) return;
+    
+    const damage = 10 + (gameState.player.level * 5);
+    let currentHp = parseInt(monsterEl.dataset.hp) || monster.hp;
+    currentHp -= damage;
+    monsterEl.dataset.hp = currentHp;
+    
+    showSystemMessage(`${monsterId}에게 ${damage} 데미지! (HP: ${currentHp})`, 'success');
+    
+    if (currentHp <= 0) {
+        monsterEl.remove();
+        addExp(monster.exp);
+        checkAchievement('first_kill');
+        
+        if (monster.drops && monster.drops.length > 0) {
+            const dropItem = monster.drops[Math.floor(Math.random() * monster.drops.length)];
+            addItem(dropItem);
+            
+            // 수집가 업적 체크
+            if (gameState.player.inventory.length >= 10) {
+                checkAchievement('collector');
+            }
+        }
+        
+        showSystemMessage(`${monsterId} 처치! 경험치 +${monster.exp}`, 'success');
     }
 }
 
@@ -231,7 +268,7 @@ function showDialog(speaker, text) {
     dialogText.innerHTML = `<strong>${speaker}:</strong> ${text}`;
     dialogOptions.innerHTML = '';
     
-    // Add options based on speaker
+    // NPC별 옵션
     if (speaker === '마을이장') {
         addDialogOption('퀘스트 받기', () => acceptQuest());
         addDialogOption('스킬 배우기', () => learnSkill());
@@ -241,6 +278,9 @@ function showDialog(speaker, text) {
         addDialogOption('대화 끝내기', () => endDialog());
     } else if (speaker === '오타크로드') {
         addDialogOption('소매치기 배우기', () => learnSkill('소매치기'));
+        addDialogOption('대화 끝내기', () => endDialog());
+    } else if (speaker === '잡화상인') {
+        addDialogOption('녹용 판매하기', () => sellItem('녹용'));
         addDialogOption('대화 끝내기', () => endDialog());
     } else {
         addDialogOption('대화 끝내기', () => endDialog());
@@ -269,7 +309,7 @@ function acceptQuest() {
         return;
     }
     
-    const quest = questData['rabbit_liver'];
+    const quest = questData['rabbit_liver_10'];
     gameState.player.currentQuest = { ...quest };
     showSystemMessage(`퀘스트 시작: ${quest.title}`, 'success');
     showDialog('마을이장', '토끼 간을 구해다오. 서두르게나!');
@@ -295,7 +335,31 @@ function learnSkill(skillName) {
     
     gameState.player.skills.push(skillName);
     showSystemMessage(`${skillName} 스킬을 습득했습니다!`, 'success');
+    checkAchievement('learn_skill');
     showDialog('마을이장', `좋은 마음이다! ${skillName}을 배웠구나!`);
+}
+
+// Sell Item
+function sellItem(itemName) {
+    const count = gameState.player.inventory.filter(i => i === itemName).length;
+    if (count === 0) {
+        showSystemMessage(`${itemName}이(가) 없습니다!`, 'warning');
+        return;
+    }
+    
+    // 아이템 제거
+    const index = gameState.player.inventory.indexOf(itemName);
+    gameState.player.inventory.splice(index, 1);
+    
+    // 골드 획득 (녹용은 27골드)
+    const gold = itemName === '녹용' ? 27 : count * 10;
+    addGold(gold);
+    
+    showSystemMessage(`${itemName}을(를) 팔아 ${gold}골드 획득!`, 'success');
+    
+    if (itemName === '녹용') {
+        gameState.flags.soldAntler = true;
+    }
 }
 
 // Skill Fusion
@@ -309,10 +373,6 @@ function skillFusion() {
         showSystemMessage('스킬 융합은 초초보자 직업만 사용할 수 있습니다!', 'warning');
         return;
     }
-    
-    // Show skill selection for fusion
-    const skillList = document.getElementById('skill-list');
-    skillList.innerHTML = '<p>융합할 스킬 2개를 선택하세요 (개발 중)</p>';
     
     showSystemMessage('스킬 융합 시스템 준비 중...', 'warning');
 }
@@ -345,43 +405,32 @@ function showSystemMessage(text, type = 'info') {
 
 // Setup Event Listeners
 function setupEventListeners() {
-    // Skill Button
-    document.getElementById('btn-skill').addEventListener('click', () => {
-        showSkillModal();
+    document.getElementById('btn-skill').addEventListener('click', () => showSkillModal());
+    document.getElementById('btn-inventory').addEventListener('click', () => showInventoryModal());
+    document.getElementById('btn-quest').addEventListener('click', () => showQuestModal());
+    document.getElementById('btn-save').addEventListener('click', () => saveGame());
+    
+    document.querySelectorAll('.map-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mapName = btn.dataset.map;
+            if (btn.disabled) {
+                showSystemMessage(`레벨 ${mapData[mapName].minLevel} 이상 필요합니다!`, 'warning');
+                return;
+            }
+            loadMap(mapName);
+        });
     });
     
-    // Inventory Button
-    document.getElementById('btn-inventory').addEventListener('click', () => {
-        showInventoryModal();
-    });
-    
-    // Quest Button
-    document.getElementById('btn-quest').addEventListener('click', () => {
-        showQuestModal();
-    });
-    
-    // Save Button
-    document.getElementById('btn-save').addEventListener('click', () => {
-        saveGame();
-    });
-    
-    // Close Modals
     document.getElementById('btn-close-skill').addEventListener('click', () => {
         document.getElementById('skill-modal').classList.add('hidden');
     });
-    
     document.getElementById('btn-close-inventory').addEventListener('click', () => {
         document.getElementById('inventory-modal').classList.add('hidden');
     });
-    
     document.getElementById('btn-close-quest').addEventListener('click', () => {
         document.getElementById('quest-modal').classList.add('hidden');
     });
-    
-    // Skill Fusion Button
-    document.getElementById('btn-skill-fusion').addEventListener('click', () => {
-        skillFusion();
-    });
+    document.getElementById('btn-skill-fusion').addEventListener('click', () => skillFusion());
 }
 
 // Show Skill Modal
@@ -401,10 +450,7 @@ function showSkillModal() {
         const skill = skillData[skillName];
         const item = document.createElement('div');
         item.className = 'skill-item';
-        item.innerHTML = `
-            <span><strong>${skillName}</strong></span>
-            <span>MP: ${skill.mp} | ${skill.description || ''}</span>
-        `;
+        item.innerHTML = `<span><strong>${skillName}</strong></span><span>MP: ${skill.mp} | ${skill.description || ''}</span>`;
         skillList.appendChild(item);
     });
 }
@@ -422,10 +468,16 @@ function showInventoryModal() {
         return;
     }
     
-    gameState.player.inventory.forEach((item, index) => {
+    // 아이템 그룹화
+    const itemCounts = {};
+    gameState.player.inventory.forEach(item => {
+        itemCounts[item] = (itemCounts[item] || 0) + 1;
+    });
+    
+    Object.entries(itemCounts).forEach(([item, count]) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'inventory-item';
-        itemDiv.textContent = `${item} x${gameState.player.inventory.filter(i => i === item).length}`;
+        itemDiv.textContent = `${item} x${count}`;
         inventoryList.appendChild(itemDiv);
     });
 }
@@ -446,10 +498,7 @@ function showQuestModal() {
     const quest = gameState.player.currentQuest;
     const questDiv = document.createElement('div');
     questDiv.className = 'quest-item';
-    questDiv.innerHTML = `
-        <span><strong>${quest.title}</strong></span>
-        <span>${quest.currentCount}/${quest.targetCount}</span>
-    `;
+    questDiv.innerHTML = `<span><strong>${quest.title}</strong></span><span>${quest.currentCount}/${quest.targetCount}</span>`;
     questList.appendChild(questDiv);
 }
 
@@ -492,12 +541,17 @@ function levelUp() {
     gameState.player.mp = gameState.player.maxMp;
     
     showSystemMessage(`레벨 업! 현재 레벨: ${gameState.player.level}`, 'success');
+    checkAchievement('level_up');
 }
 
 // Add Gold
 function addGold(amount) {
     gameState.player.gold += amount;
     updateUI();
+    
+    if (gameState.player.gold >= 10) {
+        checkAchievement('first_gold');
+    }
 }
 
 // Add Item to Inventory
@@ -505,6 +559,17 @@ function addItem(item) {
     gameState.player.inventory.push(item);
     showSystemMessage(`${item} 획득!`, 'success');
     updateUI();
+}
+
+// Check Achievement
+function checkAchievement(achievementId) {
+    if (gameState.flags.achievements.includes(achievementId)) return;
+    
+    const achievement = achievementData[achievementId];
+    if (!achievement) return;
+    
+    gameState.flags.achievements.push(achievementId);
+    showSystemMessage(`🏆 업적 달성: ${achievement.name} - ${achievement.description}`, 'success');
 }
 
 // Start when DOM is ready
