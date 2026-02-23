@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환장 RPG - 솧툌춋의 모험</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 상단 상태바 -->
+        <div id="status-bar">
+            <div class="status-item">레벨: <span id="level">1</span></div>
+            <div class="status-item">직업: <span id="job">초보자</span></div>
+            <div class="status-item">HP: <span id="hp">100</span>/<span id="max-hp">100</span></div>
+            <div class="status-item">MP: <span id="mp">50</span>/<span id="max-mp">50</span></div>
+            <div class="status-item">경험치: <span id="exp">0</span>/<span id="max-exp">100</span></div>
+            <div class="status-item">골드: <span id="gold">0</span></div>
+        </div>
+
+        <!-- 메인 게임 화면 -->
+        <div id="main-screen">
+            <div id="character-area">
+                <div id="player-sprite" class="sprite">🧑</div>
+                <div id="player-name" class="name-tag">솧툌춋</div>
+            </div>
+            <div id="npc-area"></div>
+            <div id="monster-area"></div>
+        </div>
+
+        <!-- 시스템 메시지 -->
+        <div id="system-message"></div>
+
+        <!-- 대화창 -->
+        <div id="dialog-box" class="hidden">
+            <div id="dialog-text"></div>
+            <div id="dialog-options"></div>
+        </div>
+
+        <!-- 하단 컨트롤 -->
+        <div id="control-panel">
+            <button id="btn-skill" class="control-btn">스킬</button>
+            <button id="btn-inventory" class="control-btn">인벤토리</button>
+            <button id="btn-quest" class="control-btn">퀘스트</button>
+            <button id="btn-save" class="control-btn">저장</button>
+        </div>
+
+        <!-- 모달 창들 -->
+        <div id="skill-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>스킬</h2>
+                <div id="skill-list"></div>
+                <button id="btn-skill-fusion">스킬 융합</button>
+                <button id="btn-close-skill">닫기</button>
+            </div>
+        </div>
+
+        <div id="inventory-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>인벤토리</h2>
+                <div id="inventory-list"></div>
+                <button id="btn-close-inventory">닫기</button>
+            </div>
+        </div>
+
+        <div id="quest-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>퀘스트</h2>
+                <div id="quest-list"></div>
+                <button id="btn-close-quest">닫기</button>
+            </div>
+        </div>
+
+        <div id="nickname-modal" class="modal">
+            <div class="modal-content">
+                <h2>닉네임 설정</h2>
+                <input type="text" id="nickname-input" placeholder="두 글자 닉네임" maxlength="2">
+                <div id="nickname-result"></div>
+                <button id="btn-set-nickname">설정</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
