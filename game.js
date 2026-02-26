@@ -76,9 +76,66 @@ function loadMap(mapName) {
     // 맵 방문 기록
     gameState.flags.visitedMaps[mapName] = true;
     
-    // 맵 배경색 설정
+    // 맵 배경 적용
     const mapArea = document.getElementById('map-area');
-    mapArea.style.background = map.bgColor;
+    mapArea.className = 'map-area ' + (map.bgPattern || '');
+    
+    // 장식 제거 후 추가
+    document.querySelectorAll('.decoration').forEach(el => el.remove());
+    
+    if (map.decorations) {
+        map.decorations.forEach((decType, index) => {
+            const dec = document.createElement('div');
+            dec.className = `decoration ${decType}`;
+            
+            // 장식 이모지/아이콘
+            const decorationIcons = {
+                'tree': '🌳',
+                'house': '🏠',
+                'rock': '🪨',
+                'fountain': '⛲',
+                'carrot': '🥕',
+                'bush': '🌿',
+                'flower': '🌸',
+                'stream': '',
+                'swamp': '💧',
+                'dead_tree': '🌑',
+                'fog': '',
+                'acacia': '🌴',
+                'sunset': '🌅',
+                'stalactite': '🪨',
+                'crystal': '💎',
+                'darkness': '',
+                'castle': '🏰',
+                'coral': '🪸',
+                'bubble': '🫧',
+                'treasure': '💰',
+                'ant_hill': '🐜'
+            };
+            
+            dec.innerHTML = decorationIcons[decType] || '';
+            
+            // 장식 위치 랜덤 배치
+            const positions = [
+                { left: '5%', top: '10%' },
+                { left: '15%', top: '60%' },
+                { left: '25%', top: '25%' },
+                { left: '35%', top: '70%' },
+                { left: '45%', top: '15%' },
+                { left: '55%', top: '65%' },
+                { left: '65%', top: '30%' },
+                { left: '75%', top: '75%' },
+                { left: '85%', top: '20%' },
+                { left: '90%', top: '80%' }
+            ];
+            
+            const pos = positions[index % positions.length];
+            dec.style.left = pos.left;
+            dec.style.top = pos.top;
+            
+            mapArea.appendChild(dec);
+        });
+    }
     
     // 현재 맵 표시
     document.getElementById('current-map').textContent = mapName;
@@ -156,7 +213,7 @@ function renderMonsters(monsterIds) {
         if (!monster) return;
         
         const monsterEl = document.createElement('div');
-        monsterEl.className = 'entity monster';
+        monsterEl.className = 'entity monster spawn-effect';
         monsterEl.dataset.monster = monsterId;
         monsterEl.dataset.hp = monster.hp;
         monsterEl.innerHTML = `
@@ -174,7 +231,47 @@ function renderMonsters(monsterIds) {
         });
         
         container.appendChild(monsterEl);
+        
+        // 몬스터 스폰 알림 (첫 번째 몬스터만)
+        if (index === 0) {
+            setTimeout(() => {
+                showSystemMessage(`⚠️ ${monsterId}가 나타났다! (HP: ${monster.hp})`, 'warning');
+            }, 500);
+        }
     });
+}
+
+// 몬스터 추가 스폰 함수
+function spawnAdditionalMonster() {
+    const map = mapData[gameState.currentScene];
+    if (!map || !map.monsters || map.monsters.length === 0) return;
+    
+    const monsterId = map.monsters[Math.floor(Math.random() * map.monsters.length)];
+    const monster = monsterData[monsterId];
+    if (!monster) return;
+    
+    const container = document.getElementById('monsters-container');
+    const monsterEl = document.createElement('div');
+    monsterEl.className = 'entity monster spawn-effect';
+    monsterEl.dataset.monster = monsterId;
+    monsterEl.dataset.hp = monster.hp;
+    monsterEl.innerHTML = `
+        <div class="entity-sprite">${getEntityImage('monster', monsterId)}</div>
+        <div class="entity-name">Lv.${monster.level} ${monsterId}</div>
+    `;
+    
+    const x = 100 + Math.random() * 600;
+    const y = 100 + Math.random() * 400;
+    monsterEl.style.left = `${x}px`;
+    monsterEl.style.top = `${y}px`;
+    
+    monsterEl.addEventListener('click', () => {
+        attackMonster(monsterId, monsterEl);
+    });
+    
+    container.appendChild(monsterEl);
+    showSystemMessage(`✨ 새로운 ${monsterId}가 나타났다!`, 'success');
+}
 }
 
 // Update Player Position
@@ -261,7 +358,30 @@ function attackMonster(monsterId, monsterEl) {
         }
         
         showSystemMessage(`${monsterId} 처치! 경험치 +${monster.exp}`, 'success');
+        
+        // 몬스터 처치 후 새 몬스터 스폰 (확률적)
+        if (Math.random() < 0.3) {
+            setTimeout(() => {
+                spawnAdditionalMonster();
+            }, 2000);
+        }
+    } else {
+        // 피격 효과
+        monsterEl.classList.add('hit');
+        setTimeout(() => {
+            monsterEl.classList.remove('hit');
+        }, 200);
     }
+}
+
+// 몬스터 수동 스폰 (테스트용)
+function manualSpawnMonster() {
+    const map = mapData[gameState.currentScene];
+    if (!map || !map.monsters || map.monsters.length === 0) {
+        showSystemMessage('이 맵에는 몬스터가 없습니다!', 'warning');
+        return;
+    }
+    spawnAdditionalMonster();
 }
 
 // Show Dialog
@@ -415,6 +535,7 @@ function setupEventListeners() {
     document.getElementById('btn-inventory').addEventListener('click', () => showInventoryModal());
     document.getElementById('btn-quest').addEventListener('click', () => showQuestModal());
     document.getElementById('btn-save').addEventListener('click', () => saveGame());
+    document.getElementById('btn-spawn').addEventListener('click', () => manualSpawnMonster());
     
     document.querySelectorAll('.map-btn').forEach(btn => {
         btn.addEventListener('click', () => {

@@ -43,81 +43,97 @@ const mapData = {
         name: '시작의 마을',
         minLevel: 1,
         bgColor: '#4a7c59',
+        bgPattern: 'grass',
         npcs: ['마을이장', '명란젓코난', '크웩', '잡화상인', '장비상인'],
         monsters: [],
         width: 800,
         height: 600,
-        description: '새로운 모험이 시작되는 곳'
+        description: '새로운 모험이 시작되는 곳',
+        decorations: ['house', 'tree', 'tree', 'fountain']
     },
     '개미밭': {
         name: '개미밭',
         minLevel: 1,
         bgColor: '#8b6914',
+        bgPattern: 'dirt',
         npcs: [],
         monsters: ['개미'],
         width: 800,
         height: 600,
-        description: '입문용 사냥터, 초보용 필드'
+        description: '입문용 사냥터, 초보용 필드',
+        decorations: ['ant_hill', 'rock', 'rock']
     },
     '토끼밭': {
         name: '토끼밭',
         minLevel: 3,
         bgColor: '#90EE90',
+        bgPattern: 'grass',
         npcs: [],
         monsters: ['토끼'],
         width: 800,
         height: 600,
-        description: '초반 인기 사냥터. 토끼 몬스터가 등장'
+        description: '초반 인기 사냥터. 토끼 몬스터가 등장',
+        decorations: ['carrot', 'tree', 'bush', 'flower']
     },
     '사슴고원': {
         name: '사슴고원',
         minLevel: 7,
         bgColor: '#228B22',
+        bgPattern: 'meadow',
         npcs: [],
         monsters: ['사슴'],
         width: 800,
         height: 600,
-        description: '사슴류 몬스터 출현. 초반 사냥터 중 하나'
+        description: '사슴류 몬스터 출현. 초반 사냥터 중 하나',
+        decorations: ['tree', 'tree', 'rock', 'stream']
     },
     '뱀 사냥터': {
         name: '뱀 사냥터',
         minLevel: 15,
         bgColor: '#2F4F4F',
+        bgPattern: 'swamp',
         npcs: [],
         monsters: ['뱀'],
         width: 800,
         height: 600,
-        description: '뱀 계열 몬스터가 등장'
+        description: '뱀 계열 몬스터가 등장',
+        decorations: ['swamp', 'rock', 'dead_tree', 'fog']
     },
     '사자 사냥터': {
         name: '사자 사냥터',
         minLevel: 25,
         bgColor: '#CD853F',
+        bgPattern: 'savanna',
         npcs: [],
         monsters: ['사자'],
         width: 800,
         height: 600,
-        description: '사자류 몬스터가 등장'
+        description: '사자류 몬스터가 등장',
+        decorations: ['acacia', 'rock', 'sunset', 'grass']
     },
     '동굴': {
         name: '동굴',
         minLevel: 30,
-        bgColor: '#2c2c2c',
+        bgColor: '#1a1a1a',
+        bgPattern: 'cave',
         npcs: [],
         monsters: ['동굴박쥐', '좀비'],
         width: 800,
         height: 600,
-        description: '동굴형 필드, 적 밀도 ↑'
+        description: '동굴형 필드, 적 밀도 ↑',
+        decorations: ['stalactite', 'rock', 'crystal', 'darkness']
     },
     '웅장한 용궁': {
         name: '웅장한 용궁',
         minLevel: 100,
-        bgColor: '#4169E1',
+        bgColor: '#1e3a5f',
+        bgPattern: 'underwater',
         npcs: ['용왕', '인어공주', '조스바르후작'],
         monsters: ['용'],
         width: 800,
         height: 600,
-        description: '용 계열 고레벨 필드'
+        description: '용 계열 고레벨 필드',
+        decorations: ['castle', 'coral', 'bubble', 'treasure']
     }
 };
 
@@ -210,7 +226,7 @@ const npcData = {
     '용왕': {
         name: '용왕',
         sprite: '🐲',
-        dialog: ["지상인 환영하노라", "메갈로돈을退治하면 딸을 주마"]
+        dialog: ["지상인 환영하노라", "메갈로돈을 처치하면 딸을 주마"]
     },
     '인어공주': {
         name: '인어공주',
