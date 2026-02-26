@@ -9,27 +9,29 @@ body {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     min-height: 100vh;
     color: #fff;
+    overflow-x: hidden;
 }
 
 #game-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
 }
 
 /* 상태바 */
 #status-bar {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     background: rgba(0, 0, 0, 0.5);
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .status-item {
-    font-size: 14px;
+    font-size: 12px;
     color: #aaa;
 }
 
@@ -38,19 +40,59 @@ body {
     font-weight: bold;
 }
 
+/* 맵 네비게이션 */
+#map-nav {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+.map-btn {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.2s;
+}
+
+.map-btn:hover {
+    background: #4b5563;
+}
+
+.map-btn.active {
+    background: #3b82f6;
+    border-color: #2563eb;
+}
+
+.map-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* 메인 게임 화면 */
 #game-screen {
     background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
     border-radius: 15px;
-    min-height: 400px;
+    min-height: 300px;
     position: relative;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    width: 100%;
 }
 
 #map-area {
-    width: 800px;
-    height: 600px;
+    width: 100%;
+    max-width: 800px;
+    height: 0;
+    padding-bottom: 75%;
     position: relative;
     margin: 0 auto;
     background: #4a7c59;
@@ -58,14 +100,14 @@ body {
     overflow: hidden;
 }
 
-/* 엔티티 (플레이어, NPC, 몬스터) */
+/* 엔티티 */
 .entity {
     position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: transform 0.1s, opacity 0.5s;
 }
 
 .entity:hover {
@@ -73,16 +115,46 @@ body {
 }
 
 .entity-sprite {
-    font-size: 48px;
+    font-size: 32px;
     transition: transform 0.1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.entity-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
 }
 
 .entity-name {
     background: rgba(0, 0, 0, 0.7);
-    padding: 2px 8px;
+    padding: 2px 6px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 10px;
     white-space: nowrap;
+}
+
+/* 플레이어 스폰 이펙트 - 사라졌다가 나타남 */
+.entity.player {
+    opacity: 0;
+    animation: spawnEffect 1s ease-out forwards;
+}
+
+@keyframes spawnEffect {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(180deg);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
 }
 
 .entity.player .entity-sprite {
@@ -106,75 +178,206 @@ body {
 
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-3px); }
-    75% { transform: translateX(3px); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
 }
 
 .entity.monster .entity-name {
     background: rgba(255, 0, 0, 0.7);
 }
 
-/* 맵 네비게이션 */
-#map-nav {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-}
-
-.map-btn {
-    background: #374151;
-    border: 1px solid #4b5563;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s;
-}
-
-.map-btn:hover {
-    background: #4b5563;
-    transform: translateY(-2px);
-}
-
-.map-btn.active {
-    background: #3b82f6;
-    border-color: #2563eb;
-}
-
-.map-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
 /* 이동 안내 */
 #movement-guide {
     text-align: center;
     color: #888;
-    font-size: 12px;
+    font-size: 11px;
     margin-top: 10px;
     padding: 8px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
 
+/* 대화창 */
+#dialog-box {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #4a5568;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+#dialog-box.hidden {
+    display: none;
+}
+
+#dialog-text {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    min-height: 50px;
+}
+
+#dialog-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dialog-option {
+    background: #3b82f6;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.dialog-option:hover {
+    background: #2563eb;
+}
+
+/* 컨트롤 패널 */
+#control-panel {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.control-btn:hover {
+    background: #4b5563;
+}
+
+/* 모달 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 10px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #1f2937;
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: #4ade80;
+    font-size: 18px;
+}
+
+/* 닉네임 입력 */
+#nickname-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #4b5563;
+    border-radius: 8px;
+    background: #374151;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#nickname-input:focus {
+    outline: none;
+    border-color: #4ade80;
+}
+
+#nickname-result {
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    color: #fca5a5;
+    font-size: 13px;
+}
+
+/* 리스트 */
+#skill-list, #inventory-list, #quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.skill-item, .inventory-item, .quest-item {
+    background: #374151;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.skill-item:hover, .inventory-item:hover, .quest-item:hover {
+    background: #4b5563;
+}
+
+/* 버튼 */
+button {
+    background: #3b82f6;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+button:disabled {
+    background: #6b7280;
+    cursor: not-allowed;
+}
+
 /* 시스템 메시지 */
 #system-message {
     position: fixed;
-    top: 20px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.8);
-    padding: 15px 30px;
+    padding: 12px 20px;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 14px;
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 1000;
+    max-width: 90%;
+    text-align: center;
 }
 
 #system-message.show {
@@ -196,200 +399,76 @@ body {
     color: #fde047;
 }
 
-/* 대화창 */
-#dialog-box {
-    background: rgba(0, 0, 0, 0.9);
-    border: 2px solid #4a5568;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-#dialog-box.hidden {
-    display: none;
-}
-
-#dialog-text {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    min-height: 60px;
-}
-
-#dialog-options {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.dialog-option {
-    background: #3b82f6;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.dialog-option:hover {
-    background: #2563eb;
-}
-
-/* 컨트롤 패널 */
-#control-panel {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.control-btn {
-    background: #374151;
-    border: 1px solid #4b5563;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.control-btn:hover {
-    background: #4b5563;
-    transform: translateY(-2px);
-}
-
-/* 모달 */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.modal.hidden {
-    display: none;
-}
-
-.modal-content {
-    background: #1f2937;
-    border-radius: 15px;
-    padding: 30px;
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.modal-content h2 {
-    margin-bottom: 20px;
-    color: #4ade80;
-}
-
-/* 닉네임 입력 */
-#nickname-input {
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-    border: 2px solid #4b5563;
-    border-radius: 8px;
-    background: #374151;
-    color: #fff;
-    margin-bottom: 15px;
-}
-
-#nickname-input:focus {
-    outline: none;
-    border-color: #4ade80;
-}
-
-#nickname-result {
-    margin: 15px 0;
-    padding: 15px;
-    background: rgba(239, 68, 68, 0.2);
-    border: 1px solid #ef4444;
-    border-radius: 8px;
-    color: #fca5a5;
-}
-
-/* 스킬/인벤토리/퀘스트 리스트 */
-#skill-list, #inventory-list, #quest-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.skill-item, .inventory-item, .quest-item {
-    background: #374151;
-    padding: 12px 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.skill-item:hover, .inventory-item:hover, .quest-item:hover {
-    background: #4b5563;
-}
-
-/* 버튼 공통 */
-button {
-    background: #3b82f6;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background: #2563eb;
-}
-
-button:disabled {
-    background: #6b7280;
-    cursor: not-allowed;
-}
-
-/* 닉네임 버그 효과 */
-.nickname-bug {
-    animation: glitch 0.3s ease-in-out;
-    color: #ef4444;
-}
-
-@keyframes glitch {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-/* 반응형 */
+/* 모바일 반응형 */
 @media (max-width: 768px) {
     #status-bar {
-        gap: 10px;
-        padding: 10px;
+        gap: 8px;
+        padding: 8px 10px;
     }
     
     .status-item {
-        font-size: 12px;
+        font-size: 11px;
     }
     
-    .sprite {
-        font-size: 48px;
+    .entity-sprite {
+        font-size: 24px;
+    }
+    
+    .entity-name {
+        font-size: 9px;
+        padding: 1px 4px;
     }
     
     .control-btn {
-        padding: 10px 16px;
-        font-size: 12px;
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+    
+    .map-btn {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+    
+    #dialog-text {
+        font-size: 13px;
+    }
+    
+    .modal-content {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    #game-container {
+        padding: 5px;
+    }
+    
+    #status-bar {
+        gap: 5px;
+        padding: 6px 8px;
+    }
+    
+    .status-item {
+        font-size: 10px;
+    }
+    
+    .entity-sprite {
+        font-size: 20px;
+    }
+    
+    .control-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+        flex: 1;
+        text-align: center;
+    }
+    
+    #control-panel {
+        gap: 5px;
+    }
+    
+    #movement-guide {
+        font-size: 10px;
+        padding: 6px;
     }
 }

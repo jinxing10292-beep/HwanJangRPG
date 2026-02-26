@@ -51,6 +51,13 @@ function startGame() {
     gameState.player.x = 400;
     gameState.player.y = 300;
     gameState.currentScene = '시작의 마을';
+    
+    // 플레이어 이미지 설정
+    const playerSprite = document.querySelector('#player .entity-sprite');
+    if (playerSprite) {
+        playerSprite.innerHTML = getEntityImage('player', 'player');
+    }
+    
     loadMap('시작의 마을');
     updateUI();
     setupMovement();
@@ -122,11 +129,10 @@ function renderNPCs(npcIds) {
         npcEl.className = 'entity npc';
         npcEl.dataset.npc = npcId;
         npcEl.innerHTML = `
-            <div class="entity-sprite">${npc.sprite}</div>
+            <div class="entity-sprite">${getEntityImage('npc', npcId)}</div>
             <div class="entity-name">${npc.name}</div>
         `;
         
-        // NPC 위치 (고정)
         npcEl.style.left = `${100 + (index * 120)}px`;
         npcEl.style.top = '200px';
         
@@ -154,7 +160,7 @@ function renderMonsters(monsterIds) {
         monsterEl.dataset.monster = monsterId;
         monsterEl.dataset.hp = monster.hp;
         monsterEl.innerHTML = `
-            <div class="entity-sprite">👹</div>
+            <div class="entity-sprite">${getEntityImage('monster', monsterId)}</div>
             <div class="entity-name">Lv.${monster.level} ${monsterId}</div>
         `;
         
